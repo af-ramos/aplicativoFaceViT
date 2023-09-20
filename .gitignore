@@ -87,6 +87,7 @@ doc/api/
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+lib/firebase_options.dart
 
 ### Flutter ###
 # Flutter/Dart/Pub related
