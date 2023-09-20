@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "389758429719",
+    "project_id": "facevit-tcc",
+    "storage_bucket": "facevit-tcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389758429719:android:0f0cf3ad2f381ae9014a52",
+        "android_client_info": {
+          "package_name": "com.example.face_vit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVvJwyTS_TfLLp7dlakj_QVgawJ4GOYKs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
