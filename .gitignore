@@ -43,8 +43,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Created by https://www.toptal.com/developers/gitignore/api/dart,flutter
-# Edit at https://www.toptal.com/developers/gitignore?templates=dart,flutter
+# Created by https://www.toptal.com/developers/gitignore/api/flutter,firebase,dart
+# Edit at https://www.toptal.com/developers/gitignore?templates=flutter,firebase,dart
 
 ### Dart ###
 # See https://www.dartlang.org/guides/libraries/private-files
@@ -78,6 +78,15 @@ doc/api/
 ### Dart Patch ###
 # dotenv environment variables file
 .env
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
 
 ### Flutter ###
 # Flutter/Dart/Pub related
@@ -138,4 +147,4 @@ lib/generated_plugin_registrant.dart
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# End of https://www.toptal.com/developers/gitignore/api/dart,flutter
+# End of https://www.toptal.com/developers/gitignore/api/flutter,firebase,dart
