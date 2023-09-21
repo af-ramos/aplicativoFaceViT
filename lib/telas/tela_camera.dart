@@ -67,7 +67,7 @@ class TelaCameraState extends State<TelaCamera> {
                   color: Theme.of(context).colorScheme.inversePrimary))
           : SizedBox(
               height: double.infinity, child: CameraPreview(cameraController)),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.large(
         onPressed: () async {
           if (!cameraController.value.isInitialized ||
               cameraController.value.isTakingPicture) {

@@ -62,23 +62,25 @@ class TelaInicialState extends State<TelaInicial> {
                     color: Theme.of(context).colorScheme.onPrimaryContainer),
               ),
             ),
-            const SizedBox(height: 25),
-            ElevatedButton.icon(
-              onPressed: () {
-                debugPrint("INFORMAÇÕES");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              ),
-              icon: Icon(
-                Icons.help,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-              label: Text(
-                "INFORMAÇÕES",
-                style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  debugPrint("INFORMAÇÕES");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                icon: Icon(
+                  Icons.help,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                label: Text(
+                  "INFORMAÇÕES",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 20,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer),
+                ),
               ),
             ),
           ],

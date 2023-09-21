@@ -4,7 +4,7 @@ import 'package:face_vit/models/user_model.dart';
 import 'package:camera/camera.dart';
 import 'package:face_vit/repositories/user_repository.dart';
 import 'package:face_vit/telas/tela_camera.dart';
-// import 'package:face_vit/telas/tela_inicial.dart';
+import 'package:face_vit/telas/tela_inicial.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
