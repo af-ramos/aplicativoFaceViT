@@ -26,7 +26,7 @@ class TelaCameraState extends State<TelaCamera> {
 
   void initializeCamera() async {
     cameras = await availableCameras();
-    cameraController = CameraController(cameras[1], ResolutionPreset.ultraHigh,
+    cameraController = CameraController(cameras[0], ResolutionPreset.ultraHigh,
         enableAudio: false);
 
     cameraController.initialize().then((_) {
@@ -75,7 +75,6 @@ class TelaCameraState extends State<TelaCamera> {
           }
 
           try {
-            await cameraController.setFlashMode(FlashMode.auto);
             XFile foto = await cameraController.takePicture();
 
             if (!mounted) return;

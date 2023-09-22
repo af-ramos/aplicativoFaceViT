@@ -98,8 +98,8 @@ class TelaCadastroState extends State<TelaCadastro> {
                         ? (ClipOval(
                             child: SizedBox.fromSize(
                                 size: const Size.fromRadius(50),
-                                child: Image.file(
-                                  arquivoFoto,
+                                child: Image.network(
+                                  arquivoFoto.path,
                                   fit: BoxFit.cover,
                                 )),
                           ))
