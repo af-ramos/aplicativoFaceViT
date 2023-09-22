@@ -1,6 +1,5 @@
 // import 'package:face_vit/telas/tela_cadastro.dart';
-import 'package:face_vit/telas/tela_cadastro.dart';
-// import 'package:face_vit/telas/tela_inicial.dart';
+import 'package:face_vit/telas/tela_inicial.dart';
 // import 'package:camera/camera.dart';
 // import 'package:face_vit/telas/tela_camera.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const TelaCadastro(),
+      home: const TelaInicial(),
     );
   }
 }

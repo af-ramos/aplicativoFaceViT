@@ -28,38 +28,44 @@ class TelaInicialState extends State<TelaInicial> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton.icon(
-              onPressed: () {
-                debugPrint("ENTRAR");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  debugPrint("ENTRAR");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                icon: Icon(
+                  Icons.account_circle,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                label: Text("ENTRAR",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer)),
               ),
-              icon: Icon(
-                Icons.account_circle,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-              label: Text("ENTRAR",
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  debugPrint("USUÁRIOS");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                icon: Icon(
+                  Icons.contacts,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                label: Text(
+                  "USUÁRIOS",
                   style: GoogleFonts.montserrat(
                       fontSize: 20,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer)),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                debugPrint("USUÁRIOS");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              ),
-              icon: Icon(
-                Icons.contacts,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-              label: Text(
-                "USUÁRIOS",
-                style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
+                      color: Theme.of(context).colorScheme.onPrimaryContainer),
+                ),
               ),
             ),
             Padding(
