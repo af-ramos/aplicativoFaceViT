@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:face_vit/models/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserRepository extends GetxController {
@@ -23,19 +24,24 @@ class UserRepository extends GetxController {
   }
 
   void addUser(UserModel user, File imagem) async {
-    await st
-        .ref()
-        .child('${user.nome}.png')
-        .putFile(imagem);
+    final imageRef = st.ref().child('${user.id}.png');
 
-    // user.imagemUrl = urlDownload;
+    try {
+      await imageRef.putFile(imagem).then((_) {
+        imageRef.getDownloadURL().then((imageUrl) {
+          user.imagemUrl = imageUrl;
 
-    await db
-        .collection('usuarios')
-        .withConverter(
-            fromFirestore: UserModel.fromFirestore,
-            toFirestore: (UserModel user, options) => user.toFirestore())
-        .doc(user.id)
-        .set(user);
+          db
+              .collection('usuarios')
+              .withConverter(
+                  fromFirestore: UserModel.fromFirestore,
+                  toFirestore: (UserModel user, options) => user.toFirestore())
+              .doc(user.id)
+              .set(user);
+        });
+      });
+    } on FirebaseException catch (e) {
+      debugPrint(e.message);
+    }
   }
 }
