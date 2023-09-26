@@ -5,9 +5,14 @@ class UserModel {
   final String email;
   final String nome;
   final String dataNascimento;
+  String? imagemUrl;
 
-  const UserModel(
-      {required this.id, required this.email, required this.nome, required this.dataNascimento});
+  UserModel(
+      {required this.id,
+      required this.email,
+      required this.nome,
+      required this.dataNascimento,
+      this.imagemUrl});
 
   factory UserModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -15,11 +20,11 @@ class UserModel {
     final data = snapshot.data();
 
     return UserModel(
-      id: snapshot.id,
-      nome: data?['nome'],
-      email: data?['email'],
-      dataNascimento: data?['idade'],
-    );
+        id: snapshot.id,
+        nome: data?['nome'],
+        email: data?['email'],
+        dataNascimento: data?['idade'],
+        imagemUrl: data?['imagem']);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -28,6 +33,7 @@ class UserModel {
       'email': email,
       'nome': nome,
       'idade': dataNascimento,
+      'imagem': imagemUrl
     };
   }
 }

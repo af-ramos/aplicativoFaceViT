@@ -98,8 +98,8 @@ class TelaCadastroState extends State<TelaCadastro> {
                         ? (ClipOval(
                             child: SizedBox.fromSize(
                                 size: const Size.fromRadius(50),
-                                child: Image.network(
-                                  arquivoFoto.path,
+                                child: Image.file(
+                                  arquivoFoto,
                                   fit: BoxFit.cover,
                                 )),
                           ))
@@ -268,7 +268,7 @@ class TelaCadastroState extends State<TelaCadastro> {
                         email: emailInput.text,
                         dataNascimento: dateInput.text);
 
-                    userRepo.addData(user);
+                    userRepo.addUser(user, arquivoFoto);
 
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Usuário ${user.nome} registrado :D'),
