@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:face_vit/connection.dart';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:face_vit/models/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,36 +14,60 @@ class UserRepository extends GetxController {
   final db = FirebaseFirestore.instance;
   final st = FirebaseStorage.instance;
 
-  Future<UserModel?> getUser(String nomeUsuario) async {
-    final ref = db.collection('usuarios').doc(nomeUsuario).withConverter(
-        fromFirestore: UserModel.fromFirestore,
-        toFirestore: (UserModel userModel, _) => userModel.toFirestore());
+  Future<List<List<String>>> getUsers() async {
+    try {
+      final snapshot = await db.collection('usuarios').get();
+      final users = snapshot.docs
+          .map((user) => UserModel.fromFirestore(user, null))
+          .toList();
 
-    final docSnap = await ref.get();
-    final user = docSnap.data();
+      List<List<String>> usuarios = [];
 
-    return user;
+      for (var user in users) {
+        usuarios.add([
+          user.nome,
+          await st.ref().child('${user.id}.png').getDownloadURL()
+        ]);
+      }
+
+      return usuarios;
+    } on FirebaseException catch (e) {
+      throw FirebaseException(
+          plugin: e.toString()); // ! VERIFICAR OS CASOS DE ERRO
+    }
   }
 
   void addUser(UserModel user, File imagem) async {
-    final imageRef = st.ref().child('${user.id}.png');
-
     try {
-      await imageRef.putFile(imagem).then((_) {
-        imageRef.getDownloadURL().then((imageUrl) {
-          user.imagemUrl = imageUrl;
+      final imageRef = st.ref().child('${user.id}.png');
 
-          db
-              .collection('usuarios')
-              .withConverter(
-                  fromFirestore: UserModel.fromFirestore,
-                  toFirestore: (UserModel user, options) => user.toFirestore())
-              .doc(user.id)
-              .set(user);
+      await imageRef.putFile(imagem).then((_) {
+        imageRef.getDownloadURL().then((imageUrl) async {
+          final response = await http.post(Uri.parse(Connection.ngrokUrl),
+              body: jsonEncode({'imageUrl': imageUrl}));
+
+          if (response.statusCode == 200) {
+            final featuresJson =
+                jsonDecode(response.body) as Map<String, dynamic>;
+
+            user.features = featuresJson.values.toList()[0];
+
+            db
+                .collection('usuarios')
+                .withConverter(
+                    fromFirestore: UserModel.fromFirestore,
+                    toFirestore: (UserModel user, options) =>
+                        user.toFirestore())
+                .doc(user.id)
+                .set(user);
+          } else {
+            debugPrint("ERRO"); // ! VERIFICAR OS CASOS DE ERRO / LANÇAR UMA EXCEPTION
+          }
         });
       });
     } on FirebaseException catch (e) {
-      debugPrint(e.message);
+      throw FirebaseException(
+          plugin: e.toString()); // ! VERIFICAR OS CASOS DE ERRO
     }
   }
 }

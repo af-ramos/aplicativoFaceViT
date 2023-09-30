@@ -79,6 +79,9 @@ doc/api/
 # dotenv environment variables file
 .env
 
+### Ngrok Connection ###
+lib/connection.dart
+
 ### Firebase ###
 .idea
 **/node_modules/*

@@ -1,4 +1,5 @@
 import 'package:face_vit/telas/tela_cadastro.dart';
+import 'package:face_vit/telas/tela_lista_usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -44,14 +45,18 @@ class TelaInicialState extends State<TelaInicial> {
                 label: Text("ENTRAR",
                     style: GoogleFonts.montserrat(
                         fontSize: 20,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer)),
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer)),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: ElevatedButton.icon(
                 onPressed: () {
-                  debugPrint("USUÁRIOS");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const TelaListaUsuarios()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
