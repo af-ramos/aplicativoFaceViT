@@ -38,7 +38,8 @@ class UserRepository extends GetxController {
 
       await imageRef.putFile(imagem).then((_) {
         imageRef.getDownloadURL().then((imageUrl) async {
-          final response = await http.post(Uri.parse(Connection.ngrokUrl),
+          final response = await http.post(
+              Uri.parse('${Connection.ngrokUrl}/extractFeatures'),
               body: jsonEncode({'imageUrl': imageUrl}));
 
           if (response.statusCode == 200) {
