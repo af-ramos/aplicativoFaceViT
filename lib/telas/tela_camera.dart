@@ -26,7 +26,7 @@ class TelaCameraState extends State<TelaCamera> {
 
   void initializeCamera() async {
     cameras = await availableCameras();
-    cameraController = CameraController(cameras[1], ResolutionPreset.ultraHigh,
+    cameraController = CameraController(cameras[1], ResolutionPreset.max,
         enableAudio: false);
 
     cameraController.initialize().then((_) {

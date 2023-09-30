@@ -23,7 +23,7 @@ class UserModel {
         id: snapshot.id,
         nome: data?['nome'],
         email: data?['email'],
-        dataNascimento: data?['idade'],
+        dataNascimento: data?['dataNascimento'],
         features: data?['features']);
   }
 
@@ -31,7 +31,7 @@ class UserModel {
     return {
       'email': email,
       'nome': nome,
-      'idade': dataNascimento,
+      'dataNascimento': dataNascimento,
       'features': features
     };
   }

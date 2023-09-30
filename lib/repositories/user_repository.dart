@@ -14,21 +14,16 @@ class UserRepository extends GetxController {
   final db = FirebaseFirestore.instance;
   final st = FirebaseStorage.instance;
 
-  Future<List<List<String>>> getUsers() async {
+  Future<List<List<dynamic>>> getUsers() async {
     try {
       final snapshot = await db.collection('usuarios').get();
-      final users = snapshot.docs
-          .map((user) => UserModel.fromFirestore(user, null))
-          .toList();
 
-      List<List<String>> usuarios = [];
-
-      for (var user in users) {
-        usuarios.add([
-          user.nome,
-          await st.ref().child('${user.id}.png').getDownloadURL()
-        ]);
-      }
+      final usuarios = await Future.wait(snapshot.docs.map((user) async {
+        return [
+          user['nome'],
+          await st.ref().child("${user.id}.png").getDownloadURL()
+        ];
+      }).toList());
 
       return usuarios;
     } on FirebaseException catch (e) {
@@ -61,7 +56,8 @@ class UserRepository extends GetxController {
                 .doc(user.id)
                 .set(user);
           } else {
-            debugPrint("ERRO"); // ! VERIFICAR OS CASOS DE ERRO / LANÇAR UMA EXCEPTION
+            debugPrint(
+                "ERRO"); // ! VERIFICAR OS CASOS DE ERRO / LANÇAR UMA EXCEPTION
           }
         });
       });
