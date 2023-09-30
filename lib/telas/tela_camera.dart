@@ -37,7 +37,7 @@ class TelaCameraState extends State<TelaCamera> {
         cameraReady = true;
       });
     }).catchError((e) {
-      debugPrint('Erro:  + ${e.toString()}');
+      debugPrint('Erro:  + ${e.toString()}'); // ! VERIFICAR OS CASOS DE ERRO
     });
   }
 
@@ -84,7 +84,7 @@ class TelaCameraState extends State<TelaCamera> {
                     builder: (context) =>
                         TelaCadastro(foto: foto, user: widget.user)));
           } on CameraException catch (e) {
-            debugPrint("Erro ao tirar foto: ${e.toString()}");
+            debugPrint("Erro ao tirar foto: ${e.toString()}"); // ! VERIFICAR OS CASOS DE ERRO
             return;
           }
         },
