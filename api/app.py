@@ -7,6 +7,7 @@ from detect.blazeFace import BlazeFace
 import matplotlib.pyplot as plt
 import numpy as np
 from detect.faceViT import FaceViT
+from io import BytesIO
 
 detector = BlazeFace()
 features = FaceViT()
@@ -18,17 +19,13 @@ app = Flask(__name__)
 def nameRoute():
     global response
 
+    ## ! VERIFICAR OS CASOS DE ERRO
+
     if request.method == "POST":
-        request_data = json.loads(request.data.decode("utf-8"))
-        imageUrl = request_data["imageUrl"]
+        imagem = request.files['imagem']
+        imagem = Image.open(BytesIO(imagem.read())).transpose(Image.Transpose.ROTATE_90)
 
-        image = Image.open(requests.get(imageUrl, stream=True).raw).transpose(
-            Image.Transpose.ROTATE_90
-        )
-
-        croppedImage = detector.DetectAndAlignFace(
-            cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
-        )
+        croppedImage = detector.DetectAndAlignFace(cv2.cvtColor(np.array(imagem), cv2.COLOR_BGR2RGB))
 
         faceEmbeddings = features.extractFeatures(croppedImage)
         faceEmbeddings = faceEmbeddings.tolist()
