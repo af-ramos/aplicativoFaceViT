@@ -91,7 +91,8 @@ class TelaCadastroState extends State<TelaCadastro> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TelaCamera(user: user)));
+                          builder: (context) =>
+                              TelaCamera(user: user, tela: 1)));
                 },
                 child: Center(
                     child: (hasPhoto)

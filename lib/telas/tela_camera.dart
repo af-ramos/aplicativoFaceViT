@@ -2,12 +2,16 @@
 import 'package:camera/camera.dart';
 import 'package:face_vit/models/user_model.dart';
 import 'package:face_vit/telas/tela_cadastro.dart';
+import 'package:face_vit/telas/tela_login.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TelaCamera extends StatefulWidget {
-  const TelaCamera({super.key, required this.user});
-  final UserModel user;
+  const TelaCamera({super.key, required this.tela, this.user, this.userID});
+
+  final int tela;
+  final UserModel? user;
+  final String? userID;
 
   @override
   State<TelaCamera> createState() => TelaCameraState();
@@ -26,8 +30,8 @@ class TelaCameraState extends State<TelaCamera> {
 
   void initializeCamera() async {
     cameras = await availableCameras();
-    cameraController = CameraController(cameras[1], ResolutionPreset.max,
-        enableAudio: false);
+    cameraController =
+        CameraController(cameras[1], ResolutionPreset.max, enableAudio: false);
 
     cameraController.initialize().then((_) {
       if (!mounted) {
@@ -78,13 +82,23 @@ class TelaCameraState extends State<TelaCamera> {
             XFile foto = await cameraController.takePicture();
 
             if (!mounted) return;
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TelaCadastro(foto: foto, user: widget.user)));
+
+            if (widget.tela == 1) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TelaCadastro(foto: foto, user: widget.user)));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TelaLogin(foto: foto, userID: widget.userID)));
+            }
           } on CameraException catch (e) {
-            debugPrint("Erro ao tirar foto: ${e.toString()}"); // ! VERIFICAR OS CASOS DE ERRO
+            debugPrint(
+                "Erro ao tirar foto: ${e.toString()}"); // ! VERIFICAR OS CASOS DE ERRO
             return;
           }
         },

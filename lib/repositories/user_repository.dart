@@ -32,36 +32,36 @@ class UserRepository extends GetxController {
     }
   }
 
+  Future<double> compareUser(String userID, File imagem) async {
+    return 1.0;
+  }
+
   void addUser(UserModel user, File imagem) async {
     try {
-      final imageRef = st.ref().child('${user.id}.png');
+      final request = http.MultipartRequest(
+          'POST', Uri.parse('${Connection.ngrokUrl}/extractFeatures'));
 
-      await imageRef.putFile(imagem).then((_) {
-        imageRef.getDownloadURL().then((imageUrl) async {
-          final response = await http.post(
-              Uri.parse('${Connection.ngrokUrl}/extractFeatures'),
-              body: jsonEncode({'imageUrl': imageUrl}));
+      request.files
+          .add(await http.MultipartFile.fromPath('imagem', imagem.path));
 
-          if (response.statusCode == 200) {
-            final featuresJson =
-                jsonDecode(response.body) as Map<String, dynamic>;
+      final response = await request.send();
 
-            user.features = featuresJson.values.toList()[0];
+      if (response.statusCode == 200) {
+        user.features =
+            json.decode(await response.stream.bytesToString())['features'];
 
-            db
-                .collection('usuarios')
-                .withConverter(
-                    fromFirestore: UserModel.fromFirestore,
-                    toFirestore: (UserModel user, options) =>
-                        user.toFirestore())
-                .doc(user.id)
-                .set(user);
-          } else {
-            debugPrint(
-                "ERRO"); // ! VERIFICAR OS CASOS DE ERRO / LANÇAR UMA EXCEPTION
-          }
-        });
-      });
+        db
+            .collection('usuarios')
+            .withConverter(
+                fromFirestore: UserModel.fromFirestore,
+                toFirestore: (UserModel user, options) => user.toFirestore())
+            .doc(user.id)
+            .set(user);
+
+        st.ref().child('${user.id}.png').putFile(imagem);
+      } else {
+        debugPrint('ERRO :('); // ! VERIFICAR OS CASOS DE ERRO
+      }
     } on FirebaseException catch (e) {
       throw FirebaseException(
           plugin: e.toString()); // ! VERIFICAR OS CASOS DE ERRO
