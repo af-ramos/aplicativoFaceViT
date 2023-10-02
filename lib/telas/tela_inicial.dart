@@ -1,4 +1,5 @@
 import 'package:face_vit/telas/tela_cadastro.dart';
+import 'package:face_vit/telas/tela_informacoes.dart';
 import 'package:face_vit/telas/tela_lista_usuarios.dart';
 import 'package:face_vit/telas/tela_login.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,14 @@ class TelaInicial extends StatefulWidget {
 }
 
 class TelaInicialState extends State<TelaInicial> {
+  Image informationImage = Image.asset('assets/reconhecimentoFacial.png');
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(informationImage.image, context);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +90,11 @@ class TelaInicialState extends State<TelaInicial> {
               padding: const EdgeInsets.all(30.0),
               child: ElevatedButton.icon(
                 onPressed: () {
-                  debugPrint("INFORMAÇÕES");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaInformacoes(
+                              informationImage: informationImage)));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
