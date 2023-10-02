@@ -47,6 +47,7 @@ class TelaListaUsuarioState extends State<TelaListaUsuarios> {
                     return Padding(
                         padding: const EdgeInsets.only(bottom: 15),
                         child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
                             child: Row(
                           children: [
                             ClipOval(

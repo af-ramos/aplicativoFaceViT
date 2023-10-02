@@ -67,16 +67,18 @@ class TelaUsuarioState extends State<TelaUsuario> {
                         })),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(usuario.nome,
-                          style: GoogleFonts.montserrat(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer)),
-                    ),
+                    SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(usuario.nome,
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer)),
+                        )),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(usuario.dataNascimento,
@@ -87,16 +89,18 @@ class TelaUsuarioState extends State<TelaUsuario> {
                                   .colorScheme
                                   .onPrimaryContainer)),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(usuario.email,
-                          style: GoogleFonts.montserrat(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer)),
-                    )
+                    SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(usuario.email,
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer)),
+                        ))
                   ],
                 ));
               }
