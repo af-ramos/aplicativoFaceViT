@@ -32,8 +32,9 @@ class TelaListaUsuarioState extends State<TelaListaUsuarios> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return const Text(
-                  "Erro ao trazer dados :("); // ! VERIFICAR OS CASOS DE ERRO
+              return const Center(
+                  child: Text(
+                      "Erro ao trazer dados :(")); // ! VERIFICAR OS CASOS DE ERRO
             } else {
               final usuarios = snapshot.data;
 
@@ -45,7 +46,8 @@ class TelaListaUsuarioState extends State<TelaListaUsuarios> {
 
                     return Padding(
                         padding: const EdgeInsets.only(bottom: 15),
-                        child: Row(
+                        child: SingleChildScrollView(
+                            child: Row(
                           children: [
                             ClipOval(
                               child: ClipOval(
@@ -84,7 +86,7 @@ class TelaListaUsuarioState extends State<TelaListaUsuarios> {
                                             .colorScheme
                                             .onPrimaryContainer)))
                           ],
-                        ));
+                        )));
                   });
             }
           },
