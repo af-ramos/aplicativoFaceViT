@@ -5,8 +5,10 @@ import requests
 import cv2
 from detect.blazeFace import BlazeFace
 import matplotlib.pyplot as plt
+from numpy.linalg import norm
 import numpy as np
 from detect.faceViT import FaceViT
+from scipy.spatial.distance import cosine
 from io import BytesIO
 
 detector = BlazeFace()
@@ -14,9 +16,8 @@ features = FaceViT()
 
 app = Flask(__name__)
 
-
-@app.route("/extractFeatures", methods=["GET", "POST"])
-def nameRoute():
+@app.route("/extractFeatures", methods = ["POST"])
+def extractFeatures():
     global response
 
     ## ! VERIFICAR OS CASOS DE ERRO
@@ -32,6 +33,23 @@ def nameRoute():
 
         return jsonify({"features": faceEmbeddings})
 
+@app.route("/compareUser", methods = ["POST"])
+def compareUser():
+    global response
+
+    ## ! VERIFICAR OS CASOS DE ERRO
+
+    imagem = request.files['imagem']
+    imagem = Image.open(BytesIO(imagem.read())).transpose(Image.Transpose.ROTATE_90)
+
+    croppedImage = detector.DetectAndAlignFace(cv2.cvtColor(np.array(imagem), cv2.COLOR_BGR2RGB))
+
+    faceEmbeddings = features.extractFeatures(croppedImage)
+    originalFeatures = np.array(json.loads(request.form['features']))
+
+    similarity = np.dot(faceEmbeddings, originalFeatures) / (norm(faceEmbeddings) * norm(originalFeatures))
+
+    return jsonify({"similarity": similarity})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug = True)

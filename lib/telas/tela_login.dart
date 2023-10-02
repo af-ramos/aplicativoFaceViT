@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:face_vit/repositories/user_repository.dart';
 import 'package:face_vit/telas/tela_camera.dart';
+import 'package:face_vit/telas/tela_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -52,7 +53,7 @@ class TelaLoginState extends State<TelaLogin> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Tela de Cadastro",
+        title: Text("Tela de Login",
             style: GoogleFonts.montserrat(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -154,17 +155,21 @@ class TelaLoginState extends State<TelaLogin> {
                   }
 
                   if (formKey.currentState!.validate() && !errorPhoto) {
-                    var similarity =
+                    final similarity =
                         await userRepo.compareUser(userInput.text, arquivoFoto);
-                    debugPrint(similarity.toString());
 
-                    // @ CONDIÇÕES DE SIMILARIDADE PARA LEVAR PARA A TELA DO USUÁRIO
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('A similaridade é de: $similarity :o'),
+                        duration: const Duration(seconds: 2)));
 
-                    // if (!mounted) return;
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const TelaInicial()));
+                    if (similarity >= 0.4) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TelaUsuario(userID: userInput.text)));
+                    }
                   }
                 },
                 child: Text("ENTRAR",

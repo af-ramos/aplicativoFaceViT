@@ -14,6 +14,20 @@ class UserRepository extends GetxController {
   final db = FirebaseFirestore.instance;
   final st = FirebaseStorage.instance;
 
+  Future getUserData(String userID) async {
+    final user = await db
+        .collection('usuarios')
+        .doc(userID)
+        .withConverter(
+            fromFirestore: UserModel.fromFirestore,
+            toFirestore: (UserModel user, _) => user.toFirestore())
+        .get();
+
+    final imageUrl = await st.ref().child('$userID.png').getDownloadURL();
+
+    return [user.data()!, imageUrl];
+  }
+
   Future<List<List<dynamic>>> getUsers() async {
     try {
       final snapshot = await db.collection('usuarios').get();
@@ -33,7 +47,28 @@ class UserRepository extends GetxController {
   }
 
   Future<double> compareUser(String userID, File imagem) async {
-    return 1.0;
+    try {
+      final request = http.MultipartRequest(
+          'POST', Uri.parse('${Connection.ngrokUrl}/compareUser'));
+
+      final userData = await db.collection('usuarios').doc(userID).get();
+      final userFeatures = userData.data()?['features'];
+
+      request.files
+          .add(await http.MultipartFile.fromPath('imagem', imagem.path));
+      request.fields.addAll({'features': jsonEncode(userFeatures)});
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        return json.decode(await response.stream.bytesToString())['similarity'];
+      } else {
+        debugPrint('ERRO :('); // ! VERIFICAR OS CASOS DE ERRO
+        return -1;
+      }
+    } on FirebaseException catch (e) {
+      throw FirebaseException(plugin: e.toString());
+    }
   }
 
   void addUser(UserModel user, File imagem) async {
