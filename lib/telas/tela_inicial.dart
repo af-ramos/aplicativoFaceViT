@@ -16,13 +16,14 @@ class TelaInicialState extends State<TelaInicial> {
   Image informationImage = Image.asset('assets/reconhecimentoFacial.png');
 
   @override
-  void didChangeDependencies() {
-    precacheImage(informationImage.image, context);
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(informationImage.image, context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
