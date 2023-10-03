@@ -57,6 +57,19 @@ class TelaCameraState extends State<TelaCamera> {
     return WillPopScope(
         child: Scaffold(
           appBar: AppBar(
+            leading: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => (widget.tela == 1)
+                              ? (TelaCadastro(user: widget.user))
+                              : (widget.tela == 2)
+                                  ? (TelaVerificacao(userID: widget.userID))
+                                  : (const TelaIdentificacao())));
+                },
+                child: Icon(Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer)),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: Text("Tela da Câmera",
                 style: GoogleFonts.montserrat(
