@@ -59,240 +59,263 @@ class TelaCadastroState extends State<TelaCadastro> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Tela de Cadastro",
-            style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onPrimaryContainer)),
-        centerTitle: true,
-        elevation: 5,
-        shadowColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Center(
-          child: SingleChildScrollView(
-              child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: GestureDetector(
+    return WillPopScope(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: GestureDetector(
                 onTap: () {
-                  UserModel user = UserModel(
-                      id: userInput.text,
-                      nome: nameInput.text,
-                      email: emailInput.text,
-                      dataNascimento: dateInput.text);
-
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              TelaCamera(user: user, tela: 1)));
+                          builder: (context) => const TelaInicial()));
                 },
-                child: Center(
-                    child: (hasPhoto)
-                        ? (ClipOval(
-                            child: SizedBox.fromSize(
-                                size: const Size.fromRadius(50),
-                                child: Image.file(
-                                  arquivoFoto,
-                                  fit: BoxFit.cover,
-                                )),
-                          ))
-                        : Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: (!errorPhoto)
-                                  ? Theme.of(context)
-                                      .colorScheme
-                                      .onPrimaryContainer
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .errorContainer,
-                            ),
-                            height: 100,
-                            width: 100,
-                            child: Icon(Icons.photo_camera_front_rounded,
-                                color: (!errorPhoto)
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer,
-                                size: 50),
-                          )),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: userInput,
+                child: Icon(Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer)),
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text("Tela de Cadastro",
                 style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira seu nome de usuário...';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    labelText: 'Nome de Usuário',
-                    labelStyle: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
-                    prefixIcon: const Icon(Icons.verified_user),
-                    enabledBorder: buttonStyle(context, false),
-                    focusedBorder: buttonStyle(context, false),
-                    errorBorder: buttonStyle(context, true),
-                    focusedErrorBorder: buttonStyle(context, true)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: nameInput,
-                style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira seu nome...';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    labelText: 'Nome',
-                    labelStyle: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
-                    prefixIcon: const Icon(Icons.person),
-                    enabledBorder: buttonStyle(context, false),
-                    focusedBorder: buttonStyle(context, false),
-                    errorBorder: buttonStyle(context, true),
-                    focusedErrorBorder: buttonStyle(context, true)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: emailInput,
-                style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira seu e-mail...';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    labelText: 'E-mail',
-                    labelStyle: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
-                    prefixIcon: const Icon(Icons.email),
-                    enabledBorder: buttonStyle(context, false),
-                    focusedBorder: buttonStyle(context, false),
-                    errorBorder: buttonStyle(context, true),
-                    focusedErrorBorder: buttonStyle(context, true)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira sua data de nascimento...';
-                  }
-                  return null;
-                },
-                style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-                controller: dateInput,
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.calendar_month_rounded),
-                    labelText: 'Data de Nascimento',
-                    labelStyle: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
-                    enabledBorder: buttonStyle(context, false),
-                    focusedBorder: buttonStyle(context, false),
-                    errorBorder: buttonStyle(context, true),
-                    focusedErrorBorder: buttonStyle(context, true)),
-                readOnly: true,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1950),
-                      lastDate: DateTime(2100));
-                  if (pickedDate != null) {
-                    String formattedDate =
-                        DateFormat('dd/MM/yyyy').format(pickedDate);
-                    setState(() {
-                      dateInput.text = formattedDate;
-                    });
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer)),
+            centerTitle: true,
+            elevation: 5,
+            shadowColor: Theme.of(context).colorScheme.inversePrimary,
+          ),
+          body: Center(
+              child: SingleChildScrollView(
+                  child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      UserModel user = UserModel(
+                          id: userInput.text,
+                          nome: nameInput.text,
+                          email: emailInput.text,
+                          dataNascimento: dateInput.text);
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TelaCamera(user: user, tela: 1)));
+                    },
+                    child: Center(
+                        child: (hasPhoto)
+                            ? (ClipOval(
+                                child: SizedBox.fromSize(
+                                    size: const Size.fromRadius(50),
+                                    child: Image.file(
+                                      arquivoFoto,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ))
+                            : Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: (!errorPhoto)
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .errorContainer,
+                                ),
+                                height: 100,
+                                width: 100,
+                                child: Icon(Icons.photo_camera_front_rounded,
+                                    color: (!errorPhoto)
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .inversePrimary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer,
+                                    size: 50),
+                              )),
+                  ),
                 ),
-                onPressed: () async {
-                  if (hasPhoto == false) {
-                    setState(() {
-                      errorPhoto = true;
-                    });
-                  }
-
-                  if (formKey.currentState!.validate() && !errorPhoto) {
-                    UserModel user = UserModel(
-                        id: userInput.text,
-                        nome: nameInput.text,
-                        email: emailInput.text,
-                        dataNascimento: dateInput.text);
-
-                    userRepo.addUser(user, arquivoFoto);
-
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Usuário ${user.nome} registrado :D'),
-                        duration: const Duration(seconds: 2)));
-
-                    await Future.delayed(const Duration(seconds: 3));
-                    if (!mounted) return;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TelaInicial()));
-                  }
-                },
-                child: Text("CADASTRAR",
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    controller: userInput,
                     style: GoogleFonts.montserrat(
                         fontSize: 15,
                         color:
-                            Theme.of(context).colorScheme.onPrimaryContainer)),
-              ),
+                            Theme.of(context).colorScheme.onPrimaryContainer),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira seu nome de usuário...';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'Nome de Usuário',
+                        labelStyle: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer),
+                        prefixIcon: const Icon(Icons.verified_user),
+                        enabledBorder: buttonStyle(context, false),
+                        focusedBorder: buttonStyle(context, false),
+                        errorBorder: buttonStyle(context, true),
+                        focusedErrorBorder: buttonStyle(context, true)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    controller: nameInput,
+                    style: GoogleFonts.montserrat(
+                        fontSize: 15,
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira seu nome...';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'Nome',
+                        labelStyle: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer),
+                        prefixIcon: const Icon(Icons.person),
+                        enabledBorder: buttonStyle(context, false),
+                        focusedBorder: buttonStyle(context, false),
+                        errorBorder: buttonStyle(context, true),
+                        focusedErrorBorder: buttonStyle(context, true)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    controller: emailInput,
+                    style: GoogleFonts.montserrat(
+                        fontSize: 15,
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira seu e-mail...';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'E-mail',
+                        labelStyle: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer),
+                        prefixIcon: const Icon(Icons.email),
+                        enabledBorder: buttonStyle(context, false),
+                        focusedBorder: buttonStyle(context, false),
+                        errorBorder: buttonStyle(context, true),
+                        focusedErrorBorder: buttonStyle(context, true)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira sua data de nascimento...';
+                      }
+                      return null;
+                    },
+                    style: GoogleFonts.montserrat(
+                        fontSize: 15,
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer),
+                    controller: dateInput,
+                    decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.calendar_month_rounded),
+                        labelText: 'Data de Nascimento',
+                        labelStyle: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer),
+                        enabledBorder: buttonStyle(context, false),
+                        focusedBorder: buttonStyle(context, false),
+                        errorBorder: buttonStyle(context, true),
+                        focusedErrorBorder: buttonStyle(context, true)),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1950),
+                          lastDate: DateTime(2100));
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat('dd/MM/yyyy').format(pickedDate);
+                        setState(() {
+                          dateInput.text = formattedDate;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                    onPressed: () async {
+                      if (hasPhoto == false) {
+                        setState(() {
+                          errorPhoto = true;
+                        });
+                      }
+
+                      if (formKey.currentState!.validate() && !errorPhoto) {
+                        UserModel user = UserModel(
+                            id: userInput.text,
+                            nome: nameInput.text,
+                            email: emailInput.text,
+                            dataNascimento: dateInput.text);
+
+                        userRepo.addUser(user, arquivoFoto);
+
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Usuário ${user.nome} registrado :D'),
+                            duration: const Duration(seconds: 2)));
+
+                        await Future.delayed(const Duration(seconds: 3));
+                        if (!mounted) return;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TelaInicial()));
+                      }
+                    },
+                    child: Text("CADASTRAR",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer)),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ))),
         ),
-      ))),
-    );
+        onWillPop: () async {
+          return false;
+        });
   }
 }

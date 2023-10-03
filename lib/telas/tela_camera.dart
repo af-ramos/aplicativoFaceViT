@@ -54,63 +54,68 @@ class TelaCameraState extends State<TelaCamera> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Tela da Câmera",
-            style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.onPrimaryContainer)),
-        centerTitle: true,
-        elevation: 5,
-        shadowColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: (!cameraReady)
-          ? Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.inversePrimary))
-          : SizedBox(
-              height: double.infinity, child: CameraPreview(cameraController)),
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: () async {
-          if (!cameraController.value.isInitialized ||
-              cameraController.value.isTakingPicture) {
-            return;
-          }
+    return WillPopScope(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text("Tela da Câmera",
+                style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer)),
+            centerTitle: true,
+            elevation: 5,
+            shadowColor: Theme.of(context).colorScheme.inversePrimary,
+          ),
+          body: (!cameraReady)
+              ? Center(
+                  child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.inversePrimary))
+              : SizedBox(
+                  height: double.infinity,
+                  child: CameraPreview(cameraController)),
+          floatingActionButton: FloatingActionButton.large(
+            onPressed: () async {
+              if (!cameraController.value.isInitialized ||
+                  cameraController.value.isTakingPicture) {
+                return;
+              }
 
-          try {
-            XFile foto = await cameraController.takePicture();
+              try {
+                XFile foto = await cameraController.takePicture();
 
-            if (!mounted) return;
+                if (!mounted) return;
 
-            if (widget.tela == 1) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          TelaCadastro(foto: foto, user: widget.user)));
-            } else if (widget.tela == 2) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          TelaVerificacao(foto: foto, userID: widget.userID)));
-            } else {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TelaIdentificacao(foto: foto)));
-            }
-          } on CameraException catch (e) {
-            debugPrint(
-                "Erro ao tirar foto: ${e.toString()}"); // ! VERIFICAR OS CASOS DE ERRO
-            return;
-          }
-        },
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        child: const Icon(Icons.camera_alt),
-      ),
-    );
+                if (widget.tela == 1) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TelaCadastro(foto: foto, user: widget.user)));
+                } else if (widget.tela == 2) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaVerificacao(
+                              foto: foto, userID: widget.userID)));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaIdentificacao(foto: foto)));
+                }
+              } on CameraException catch (e) {
+                debugPrint(
+                    "Erro ao tirar foto: ${e.toString()}"); // ! VERIFICAR OS CASOS DE ERRO
+                return;
+              }
+            },
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            child: const Icon(Icons.camera_alt),
+          ),
+        ),
+        onWillPop: () async {
+          return false;
+        });
   }
 }

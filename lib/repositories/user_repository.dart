@@ -110,6 +110,12 @@ class UserRepository extends GetxController {
         user.features =
             json.decode(await response.stream.bytesToString())['features'];
 
+        // ! VERIFICAR SE HOUVE UPLOAD DA IMAGEM
+        // ! VERIFICAR SE O CADASTRO DEU CERTO
+        // ! CASO CONTRÁRIO NÃO CADASTRAR OU APAGAR IMAGEM
+
+        st.ref().child('${user.id}.png').putFile(imagem);
+
         db
             .collection('usuarios')
             .withConverter(
@@ -117,8 +123,6 @@ class UserRepository extends GetxController {
                 toFirestore: (UserModel user, options) => user.toFirestore())
             .doc(user.id)
             .set(user);
-
-        st.ref().child('${user.id}.png').putFile(imagem);
       } else {
         debugPrint('ERRO :('); // ! VERIFICAR OS CASOS DE ERRO
       }

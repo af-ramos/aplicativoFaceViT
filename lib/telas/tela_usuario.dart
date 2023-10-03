@@ -1,4 +1,5 @@
 import 'package:face_vit/repositories/user_repository.dart';
+import 'package:face_vit/telas/tela_verificacao.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,95 +16,109 @@ class TelaUsuarioState extends State<TelaUsuario> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text("Tela de Usuário",
-              style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer)),
-          centerTitle: true,
-          elevation: 5,
-          shadowColor: Theme.of(context).colorScheme.inversePrimary,
-        ),
-        body: FutureBuilder(
-            future: userRepo.getUserData(widget.userID),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return const Center(child: Text("Erro ao trazer dados :("));
-              } else {
-                final usuario = snapshot.data[0];
-                final usuarioImage = snapshot.data[1];
+    return WillPopScope(
+        child: Scaffold(
+            appBar: AppBar(
+              leading: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TelaVerificacao()));
+                  },
+                  child: Icon(Icons.arrow_back,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer)),
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              title: Text("Tela de Usuário",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer)),
+              centerTitle: true,
+              elevation: 5,
+              shadowColor: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            body: FutureBuilder(
+                future: userRepo.getUserData(widget.userID),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("Erro ao trazer dados :("));
+                  } else {
+                    final usuario = snapshot.data[0];
+                    final usuarioImage = snapshot.data[1];
 
-                return Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ClipOval(
-                        child: ClipOval(
-                            child: Image.network(usuarioImage,
-                                fit: BoxFit.cover, width: 150, height: 150,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-
-                          return Center(
-                              child: SizedBox(
-                            width: 150,
-                            height: 150,
-                            child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null),
-                          ));
-                        })),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
+                    return Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Text(usuario.nome,
+                          child: ClipOval(
+                            child: ClipOval(
+                                child: Image.network(usuarioImage,
+                                    fit: BoxFit.cover, width: 150, height: 150,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) return child;
+
+                              return Center(
+                                  child: SizedBox(
+                                width: 150,
+                                height: 150,
+                                child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null),
+                              ));
+                            })),
+                          ),
+                        ),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(usuario.nome,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer)),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(usuario.dataNascimento,
                               style: GoogleFonts.montserrat(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onPrimaryContainer)),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(usuario.dataNascimento,
-                          style: GoogleFonts.montserrat(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer)),
-                    ),
-                    SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(usuario.email,
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimaryContainer)),
-                        ))
-                  ],
-                ));
-              }
-            }));
+                        ),
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(usuario.email,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer)),
+                            ))
+                      ],
+                    ));
+                  }
+                })),
+        onWillPop: () async {
+          return false;
+        });
   }
 }
