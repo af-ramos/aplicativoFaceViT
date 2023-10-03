@@ -45,7 +45,9 @@ class TelaVerificacaoState extends State<TelaVerificacao> {
     if (widget.foto != null) {
       arquivoFoto = File(widget.foto!.path);
       hasPhoto = true;
+    }
 
+    if (widget.userID != null) {
       userInput.text = widget.userID!;
     }
   }

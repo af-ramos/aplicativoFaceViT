@@ -49,7 +49,9 @@ class TelaCadastroState extends State<TelaCadastro> {
     if (widget.foto != null) {
       arquivoFoto = File(widget.foto!.path);
       hasPhoto = true;
+    }
 
+    if (widget.user != null) {
       userInput.text = widget.user!.id;
       nameInput.text = widget.user!.nome;
       emailInput.text = widget.user!.email;
