@@ -4,19 +4,19 @@ import 'package:camera/camera.dart';
 import 'package:face_vit/repositories/user_repository.dart';
 import 'package:face_vit/telas/tela_camera.dart';
 import 'package:face_vit/telas/tela_usuario.dart';
+import 'package:face_vit/telas/tela_verificacao.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TelaLogin extends StatefulWidget {
-  const TelaLogin({super.key, this.foto, this.userID});
+class TelaIdentificacao extends StatefulWidget {
+  const TelaIdentificacao({super.key, this.foto});
   final XFile? foto;
-  final String? userID;
 
   @override
-  State<TelaLogin> createState() => TelaLoginState();
+  State<TelaIdentificacao> createState() => TelaIdentificacaoState();
 }
 
-class TelaLoginState extends State<TelaLogin> {
+class TelaIdentificacaoState extends State<TelaIdentificacao> {
   final formKey = GlobalKey<FormState>();
   TextEditingController userInput = TextEditingController();
 
@@ -43,17 +43,23 @@ class TelaLoginState extends State<TelaLogin> {
     if (widget.foto != null) {
       arquivoFoto = File(widget.foto!.path);
       hasPhoto = true;
-
-      userInput.text = widget.userID!;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TelaVerificacao()));
+          },
+          child: const Icon(Icons.compare)),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Tela de Login",
+        title: Text("Tela de Identificação",
             style: GoogleFonts.montserrat(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -77,7 +83,7 @@ class TelaLoginState extends State<TelaLogin> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              TelaCamera(userID: userInput.text, tela: 2)));
+                              TelaCamera(userID: userInput.text, tela: 3)));
                 },
                 child: Center(
                     child: (hasPhoto)
@@ -117,32 +123,6 @@ class TelaLoginState extends State<TelaLogin> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: userInput,
-                style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira seu nome de usuário...';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    labelText: 'Nome de Usuário',
-                    labelStyle: GoogleFonts.montserrat(
-                        fontSize: 15,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
-                    prefixIcon: const Icon(Icons.verified_user),
-                    enabledBorder: buttonStyle(context, false),
-                    focusedBorder: buttonStyle(context, false),
-                    errorBorder: buttonStyle(context, true),
-                    focusedErrorBorder: buttonStyle(context, true)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -154,22 +134,19 @@ class TelaLoginState extends State<TelaLogin> {
                     });
                   }
 
-                  if (formKey.currentState!.validate() && !errorPhoto) {
-                    final similarity =
-                        await userRepo.compareUser(userInput.text, arquivoFoto);
+                  if (!errorPhoto) {
+                    var user = await userRepo.identifyUser(arquivoFoto);
 
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('A similaridade é de: $similarity :o'),
+                        content: Text('A similaridade é de: ${user[1]} :o'),
                         duration: const Duration(seconds: 2)));
 
-                    if (similarity >= 0.4) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  TelaUsuario(userID: userInput.text)));
-                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TelaUsuario(userID: user[0])));
                   }
                 },
                 child: Text("ENTRAR",

@@ -2,7 +2,8 @@
 import 'package:camera/camera.dart';
 import 'package:face_vit/models/user_model.dart';
 import 'package:face_vit/telas/tela_cadastro.dart';
-import 'package:face_vit/telas/tela_login.dart';
+import 'package:face_vit/telas/tela_identificacao.dart';
+import 'package:face_vit/telas/tela_verificacao.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -89,12 +90,17 @@ class TelaCameraState extends State<TelaCamera> {
                   MaterialPageRoute(
                       builder: (context) =>
                           TelaCadastro(foto: foto, user: widget.user)));
-            } else {
+            } else if (widget.tela == 2) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          TelaLogin(foto: foto, userID: widget.userID)));
+                          TelaVerificacao(foto: foto, userID: widget.userID)));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TelaIdentificacao(foto: foto)));
             }
           } on CameraException catch (e) {
             debugPrint(

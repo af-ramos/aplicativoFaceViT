@@ -46,10 +46,10 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<double> compareUser(String userID, File imagem) async {
+  Future<double> verifyUser(String userID, File imagem) async {
     try {
       final request = http.MultipartRequest(
-          'POST', Uri.parse('${Connection.ngrokUrl}/compareUser'));
+          'POST', Uri.parse('${Connection.ngrokUrl}/verifyUser'));
 
       final userData = await db.collection('usuarios').doc(userID).get();
       final userFeatures = userData.data()?['features'];
@@ -65,6 +65,31 @@ class UserRepository extends GetxController {
       } else {
         debugPrint('ERRO :('); // ! VERIFICAR OS CASOS DE ERRO
         return -1;
+      }
+    } on FirebaseException catch (e) {
+      throw FirebaseException(plugin: e.toString());
+    }
+  }
+
+  Future<dynamic> identifyUser(File imagem) async {
+    try {
+      final request = http.MultipartRequest(
+          'POST', Uri.parse('${Connection.ngrokUrl}/identifyUser'));
+
+      final snapshot = await db.collection('usuarios').get();
+      final usersFeatures = await Future.wait(snapshot.docs.map((user) async {
+        return {'id': user.id, 'features': user['features']};
+      }).toList());
+
+      request.files
+          .add(await http.MultipartFile.fromPath('imagem', imagem.path));
+      request.fields['usersFeatures'] = jsonEncode(usersFeatures);
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final result = json.decode(await response.stream.bytesToString());
+        return ([result['userID'], result['similarity']]);
       }
     } on FirebaseException catch (e) {
       throw FirebaseException(plugin: e.toString());
