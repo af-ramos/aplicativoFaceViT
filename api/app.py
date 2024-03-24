@@ -19,9 +19,7 @@ app = Flask(__name__)
 @app.route("/extractFeatures", methods = ["POST"])
 def extractFeatures():
     global response
-
-    ## ! VERIFICAR OS CASOS DE ERRO
-
+    
     if request.method == "POST":
         imagem = request.files['imagem']
         imagem = Image.open(BytesIO(imagem.read())).transpose(Image.Transpose.ROTATE_90)
@@ -36,8 +34,6 @@ def extractFeatures():
 @app.route("/verifyUser", methods = ["POST"])
 def verifyUser():
     global response
-
-    ## ! VERIFICAR OS CASOS DE ERRO
 
     imagem = request.files['imagem']
     imagem = Image.open(BytesIO(imagem.read())).transpose(Image.Transpose.ROTATE_90)
@@ -54,8 +50,6 @@ def verifyUser():
 @app.route("/identifyUser", methods = ["POST"])
 def identifyUser():
     global response
-
-    ## ! VERIFICAR OS CASOS DE ERRO
 
     imagem = request.files['imagem']
     imagem = Image.open(BytesIO(imagem.read())).transpose(Image.Transpose.ROTATE_90)
