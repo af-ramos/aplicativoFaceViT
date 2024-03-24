@@ -42,7 +42,7 @@ class TelaCameraState extends State<TelaCamera> {
         cameraReady = true;
       });
     }).catchError((e) {
-      debugPrint('Erro:  + ${e.toString()}'); // ! VERIFICAR OS CASOS DE ERRO
+      debugPrint('Erro:  + ${e.toString()}');
     });
   }
 
@@ -119,7 +119,7 @@ class TelaCameraState extends State<TelaCamera> {
                 }
               } on CameraException catch (e) {
                 debugPrint(
-                    "Erro ao tirar foto: ${e.toString()}"); // ! VERIFICAR OS CASOS DE ERRO
+                    "Erro ao tirar foto: ${e.toString()}");
                 return;
               }
             },
