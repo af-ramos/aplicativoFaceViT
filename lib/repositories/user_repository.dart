@@ -42,7 +42,7 @@ class UserRepository extends GetxController {
       return usuarios;
     } on FirebaseException catch (e) {
       throw FirebaseException(
-          plugin: e.toString()); // ! VERIFICAR OS CASOS DE ERRO
+          plugin: e.toString());
     }
   }
 
@@ -63,7 +63,7 @@ class UserRepository extends GetxController {
       if (response.statusCode == 200) {
         return json.decode(await response.stream.bytesToString())['similarity'];
       } else {
-        debugPrint('ERRO :('); // ! VERIFICAR OS CASOS DE ERRO
+        debugPrint('ERRO :(');
         return -1;
       }
     } on FirebaseException catch (e) {
@@ -110,10 +110,6 @@ class UserRepository extends GetxController {
         user.features =
             json.decode(await response.stream.bytesToString())['features'];
 
-        // ! VERIFICAR SE HOUVE UPLOAD DA IMAGEM
-        // ! VERIFICAR SE O CADASTRO DEU CERTO
-        // ! CASO CONTRÁRIO NÃO CADASTRAR OU APAGAR IMAGEM
-
         st.ref().child('${user.id}.png').putFile(imagem);
 
         db
@@ -124,11 +120,11 @@ class UserRepository extends GetxController {
             .doc(user.id)
             .set(user);
       } else {
-        debugPrint('ERRO :('); // ! VERIFICAR OS CASOS DE ERRO
+        debugPrint('ERRO :(');
       }
     } on FirebaseException catch (e) {
       throw FirebaseException(
-          plugin: e.toString()); // ! VERIFICAR OS CASOS DE ERRO
+          plugin: e.toString());
     }
   }
 }
