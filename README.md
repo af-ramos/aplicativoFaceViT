@@ -1,17 +1,6 @@
-# face_vit
+# Aplicativo FaceViT
 
-A new Flutter project.
+Um projeto de TCC desenvolvido para o curso de graduação do curso de Ciências da Computação da Unesp de Bauru, baseado em um aplicativo móvel de reconhecimento facial utilizando Flutter e Firebase, em conjunto com o modelo de aprendizagem profunda baseada em Transformers, Vision Transformer.
 
-## Getting Started
+## Imagens da Aplicação
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# appFaceViT
