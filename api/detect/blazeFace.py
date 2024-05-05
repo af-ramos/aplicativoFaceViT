@@ -107,4 +107,4 @@ class BlazeFace:
             else:
                 return Image.fromarray(image[y1 : y1 + height, x1 : x1 + width])
         else:
-            raise ValueError("Face not identified!") ## ! VERIFICAR OS CASOS DE ERRO
+            raise ValueError("Face not identified!")
